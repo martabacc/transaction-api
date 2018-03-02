@@ -17,8 +17,7 @@ describe('UserController', () => {
 
   describe('GET /users/{:id} [Find By Id]', () => {
     it('should return user of specified id', async () => {
-      const userFromDB = await models.User.create(
-        { name: 'Christo', email: 'christo_ganteng@mail.com' });
+      const userFromDB = await models.User.create({ name: 'Christo', email: 'christo_ganteng@mail.com' });
       const response = await server.inject(`/users/${userFromDB.id}`);
       const returnedUserResult = JSON.parse(response.payload);
       expect(returnedUserResult.id).to.eq(userFromDB.id);
@@ -26,7 +25,7 @@ describe('UserController', () => {
       expect(returnedUserResult.email).to.eq('christo_ganteng@mail.com');
     });
     it('should return 404 if id is not exist', async () => {
-      const response = await server.inject(`/users/10000`);
+      const response = await server.inject('/users/10000');
       expect(response.statusCode).to.equal(404);
     });
   });
@@ -98,9 +97,9 @@ describe('UserController', () => {
     it('should return 204 status code for invalid update request', async () => {
       const updateRequest = {
         method: 'PATCH',
-        url: `/users/-1000`,
+        url: '/users/-1000',
         payload: {
-          name: 'Roni'
+          name: 'Roni',
         },
       };
       const updateResponse = await server.inject(updateRequest);

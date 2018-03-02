@@ -10,7 +10,7 @@ export default class TransactionController {
     server.route({
       method: 'GET',
       path: '/transactions',
-      handler: (request, h) => models.Transaction.findAll(),
+      handler: () => models.Transaction.findAll(),
     });
     server.route({
       method: 'POST',
@@ -24,26 +24,26 @@ export default class TransactionController {
     });
   }
 
-  async create(request, h){
-    const userCreated =  await models.Transaction.create(request.payload);
+  async create(request, h) {
+    const userCreated = await models.Transaction.create(request.payload);
     if (userCreated) {
       return h.response(userCreated).code(201);
     }
-    //it should not reach here
+    // it should not reach here
     return h.response(userCreated).code(400);
   }
 
   async find(request, h) {
     const transaction = await models.Transaction.findById(request.params.id);
-    if(transaction){
+    if (transaction) {
       return h.response(transaction);
     }
     return h.response(transaction).code(404);
   }
 
-  async listByUser(request, h){
+  async listByUser(request, h) {
     const user = await models.User.findById(request.params.id);
-    if(user){
+    if (user) {
       const transaction = await user.getTransactions();
       return h.response(transaction);
     }

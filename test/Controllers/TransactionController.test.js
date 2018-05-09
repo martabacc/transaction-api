@@ -10,8 +10,7 @@ describe('TransactionController', () => {
   beforeEach(async () => {
     server = new Hapi.Server();
     new App(server).configure();
-    user = await models.User.create(
-      { name: 'Christo AP', email: 'christo_ganteng@mail.com' });
+    user = await models.User.create({ name: 'Christo AP', email: 'christo_ganteng@mail.com' });
   });
 
   afterEach(async () => {
@@ -38,7 +37,7 @@ describe('TransactionController', () => {
       expect(parsedActualDate).to.eq(transactionDate);
     });
     it('should return 404 when id is not found', async () => {
-      const response = await server.inject(`/transactions/9999`);
+      const response = await server.inject('/transactions/9999');
       expect(response.statusCode).to.equal(404);
     });
   });
@@ -103,18 +102,18 @@ describe('TransactionController', () => {
       const transactionFromAPI = await server.inject(`/users/${user.id}/transactions`);
       const serverResponse = JSON.parse(transactionFromAPI.payload);
 
-      expect(serverResponse[ 0 ].amount).to.eq(-1000000);
-      expect(serverResponse[ 0 ].description).to.eq('Buying Rona birthday presents');
-      const parsedActualFirstDate = Date.parse(serverResponse[ 0 ].date);
+      expect(serverResponse[0].amount).to.eq(-1000000);
+      expect(serverResponse[0].description).to.eq('Buying Rona birthday presents');
+      const parsedActualFirstDate = Date.parse(serverResponse[0].date);
       expect(parsedActualFirstDate).to.eq(transactionData.date);
 
-      expect(serverResponse[ 1 ].amount).to.eq(-1000000);
-      expect(serverResponse[ 1 ].description).to.eq('Buying Rona ice creams');
-      const parsedActualSecondDate = Date.parse(serverResponse[ 1 ].date);
+      expect(serverResponse[1].amount).to.eq(-1000000);
+      expect(serverResponse[1].description).to.eq('Buying Rona ice creams');
+      const parsedActualSecondDate = Date.parse(serverResponse[1].date);
       expect(parsedActualSecondDate).to.eq(anotherTransactionData.date);
     });
     it('should return 404 for invalid/inexist customer id', async () => {
-      const badRequest = await server.inject(`/users/99999/transactions`);
+      const badRequest = await server.inject('/users/99999/transactions');
       expect(badRequest.statusCode).to.eq(404);
     });
   });

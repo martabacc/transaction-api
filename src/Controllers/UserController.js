@@ -10,7 +10,7 @@ export default class UserController {
     server.route({
       method: 'GET',
       path: '/users',
-      handler: (request, h) => models.User.findAll(),
+      handler: () => models.User.findAll(),
     });
     server.route({
       method: 'POST',
@@ -26,7 +26,7 @@ export default class UserController {
 
   async find(request, h) {
     const user = await models.User.findById(request.params.id);
-    if(user){
+    if (user) {
       return h.response(user);
     }
     return h.response().code(404);
@@ -37,18 +37,16 @@ export default class UserController {
     if (created) {
       return h.response(created).code(201);
     }
-    //it should not reach here
+    // it should not reach here
     return h.response().code(400);
   }
 
   async update(request, h) {
     const findUser = await models.User.find(request.payload.id);
-    if(!findUser){
+    if (!findUser) {
       return h.response(findUser).code(204);
     }
-    console.log(findUser);
-
-    return await findUser.update(request.payload)
-      .then((updatedUser) => h.response(updatedUser));
+    return findUser.update(request.payload)
+      .then(updatedUser => h.response(updatedUser));
   }
 }
